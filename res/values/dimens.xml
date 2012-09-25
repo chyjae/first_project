@@ -1,0 +1,10 @@
+<resources>
+
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+
+    <!-- 77.33 - 2.67 - 2.67 -->
+    <dimen name="npa_order_change_photo_entering_size">71.99dp</dimen>
+    <dimen name="npa_order_change_photo_original_size">76dp</dimen>
+</resources>

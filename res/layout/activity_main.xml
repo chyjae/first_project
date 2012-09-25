@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+<!--     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/hello_world"
+        tools:context=".MainActivity" /> -->
+
+ 	<com.example.testdnd.dnd.DragLayer
+		android:id="@+id/dragLayer" android:layout_width="fill_parent" android:layout_height="@dimen/npa_order_change_photo_original_size" android:visibility="visible">    
+	    <com.example.testdnd.VisibleChildDetectableHorizontalScrollView android:id="@+id/scrollView"
+	        android:layout_width="fill_parent" android:layout_height="@dimen/npa_order_change_photo_original_size"
+	        android:background="#00FF00">
+<!-- 	        <LinearLayout android:id="@+id/linearLayout"
+	            android:layout_width="wrap_content" android:layout_height="@dimen/npa_order_change_photo_original_size" /> -->
+	    </com.example.testdnd.VisibleChildDetectableHorizontalScrollView>
+    </com.example.testdnd.dnd.DragLayer>
+    
+<!-- 	<com.example.testdnd.dnd.DragLayer
+		android:id="@+id/dragLayer" android:layout_width="fill_parent" android:layout_height="@dimen/npa_order_change_photo_original_size" android:visibility="visible">    
+	    <Gallery android:id="@+id/gallery"
+	        android:layout_width="fill_parent" android:layout_height="77.33dp"
+	        android:spacing="5dp" 
+	        android:background="#0000FF"/>
+	</com.example.testdnd.dnd.DragLayer> -->
+</LinearLayout>
