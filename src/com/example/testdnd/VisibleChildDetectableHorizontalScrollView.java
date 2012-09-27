@@ -11,19 +11,20 @@ import android.widget.LinearLayout;
 
 /**
  * @author Choi Yunjae (KR15548, yunjae.choi@nhn.com)
- *
+ * 
  */
-public class VisibleChildDetectableHorizontalScrollView extends HorizontalScrollView {
+public class VisibleChildDetectableHorizontalScrollView extends
+		HorizontalScrollView {
 	private static final String TAG = "HorizontalScrollView";
 	private OnVisibleItemChangedListener onVisibleItemChangedListener;
 	private LinearLayout layout;
 
 	/**
-	 * View.mAttachInfo가 있을 때 post() 메소드가 제대로 동작한다.
-	 * onAttachToWindow() 메소드가 실행된 후에, 이전에 들어온 요청이 있으면 수행해준다.
+	 * View.mAttachInfo가 있을 때 post() 메소드가 제대로 동작한다. onAttachToWindow() 메소드가 실행된
+	 * 후에, 이전에 들어온 요청이 있으면 수행해준다.
 	 */
 	private boolean isResetScrollTaskPending = false;
-	private Runnable resetScrollTask = new Runnable() {
+	private final Runnable resetScrollTask = new Runnable() {
 		@Override
 		public void run() {
 			isResetScrollTaskPending = false;
@@ -36,12 +37,14 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 	private int fixedMarginLeft = -1;
 	private int fixedScrollViewWidth = -1;
 
-	public VisibleChildDetectableHorizontalScrollView(Context context, AttributeSet attrs, int defStyle) {
+	public VisibleChildDetectableHorizontalScrollView(Context context,
+			AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init();
 	}
 
-	public VisibleChildDetectableHorizontalScrollView(Context context, AttributeSet attrs) {
+	public VisibleChildDetectableHorizontalScrollView(Context context,
+			AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
@@ -59,10 +62,13 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 
 	private void initInnerLayout() {
 		this.layout = new LinearLayout(getContext());
-		this.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		this.addView(layout, new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT));
 	}
 
-	public void enableFixedWidthMode(int itemWidth, int marginLeft, int scrollViewWidth) {
+	public void enableFixedWidthMode(int itemWidth, int marginLeft,
+			int scrollViewWidth) {
 		this.fixedItemWidth = itemWidth;
 		this.fixedMarginLeft = marginLeft;
 		this.fixedScrollViewWidth = scrollViewWidth;
@@ -99,7 +105,8 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 		this.scrollTo(offsetX, 0);
 	}
 
-	public void setOnVisibleItemChangedListener(OnVisibleItemChangedListener onVisibleItemChangedListener) {
+	public void setOnVisibleItemChangedListener(
+			OnVisibleItemChangedListener onVisibleItemChangedListener) {
 		this.onVisibleItemChangedListener = onVisibleItemChangedListener;
 	}
 
@@ -109,7 +116,7 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 	}
 
 	public View getGrandChildAt(int index) {
-		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
+		ViewGroup mainView = (ViewGroup) this.getChildAt(0);
 		if (mainView == null || mainView.getChildCount() <= index) {
 			return null;
 		}
@@ -118,7 +125,7 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 	}
 
 	public int getGrandChildCount() {
-		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
+		ViewGroup mainView = (ViewGroup) this.getChildAt(0);
 		if (mainView == null) {
 			return 0;
 		}
@@ -131,15 +138,17 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 			return;
 		}
 
-		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
+		ViewGroup mainView = (ViewGroup) this.getChildAt(0);
 		if (mainView == null) {
 			return;
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("width=").append(getWidth()).append(", mainView.getWidth()=").append(mainView.getWidth());
+		sb.append("width=").append(getWidth()).append(", mainView.getWidth()=")
+				.append(mainView.getWidth());
 
-		boolean isLayoutFinished = (this.getWidth() > 0) && (mainView.getWidth() > 0);
+		boolean isLayoutFinished = (this.getWidth() > 0)
+				&& (mainView.getWidth() > 0);
 		if (isLayoutFinished) {
 			for (int i = 0; i < mainView.getChildCount(); i++) {
 				View child = mainView.getChildAt(i);
@@ -200,7 +209,7 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 	}
 
 	public void triggerOnVisibleItemChanged(int newX) {
-		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
+		ViewGroup mainView = (ViewGroup) this.getChildAt(0);
 
 		boolean isFixedWidthMode = (fixedItemWidth > 0);
 		int scrollViewWidth = this.getWidth();
@@ -223,7 +232,8 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 		}
 
 		for (int i = 0; i < mainView.getChildCount(); i++) {
-			int width = isFixedWidthMode ? fixedItemWidth : mainView.getChildAt(i).getWidth();
+			int width = isFixedWidthMode ? fixedItemWidth : mainView
+					.getChildAt(i).getWidth();
 
 			widthTotal += width;
 
@@ -248,222 +258,65 @@ public class VisibleChildDetectableHorizontalScrollView extends HorizontalScroll
 			lastVisibleItemIndex = mainView.getChildCount() - 1;
 		}
 
-		Log.d(TAG, "triggerOnVisibleItemChanged(" + newX + ") : " + firstVisibleItemIndex + "~"
-			+ lastVisibleItemIndex);
+		Log.d(TAG, "triggerOnVisibleItemChanged(" + newX + ") : "
+				+ firstVisibleItemIndex + "~" + lastVisibleItemIndex);
 
 		// trigger
 		if (firstVisibleItemIndex < 0) {
 			firstVisibleItemIndex = 0;
 		}
 
-		onVisibleItemChangedListener.onVisibleItemChanged(this, firstVisibleItemIndex, lastVisibleItemIndex);
+		onVisibleItemChangedListener.onVisibleItemChanged(this,
+				firstVisibleItemIndex, lastVisibleItemIndex);
+	}
+
+	public void changeOrder(int src, int into) {
+
+		int count = layout.getChildCount();
+		Log.d(TAG, "changeOrder : count=" + count + ", posA=" + src + ", posB="
+				+ into);
+
+		if (src == into) {
+			return;
+		}
+
+		if (src >= count || into >= count) {
+			Log.w(TAG, "changeOrder failed.");
+			return;
+		}
+
+		View srcView = layout.getChildAt(src);
+		View tempView = new View(getContext());
+
+		layout.removeViewAt(src);
+		layout.addView(tempView, src);
+
+		layout.addView(srcView, into);
+		layout.removeView(tempView);
+
+		layout.invalidate();
 	}
 
 	public static String getActionName(int action) {
 		switch (action) {
-			case MotionEvent.ACTION_CANCEL:
-				return "ACTION_CANCEL";
-			case MotionEvent.ACTION_DOWN:
-				return "ACTION_DOWN";
-			case MotionEvent.ACTION_MOVE:
-				return "ACTION_MOVE";
-			case MotionEvent.ACTION_OUTSIDE:
-				return "ACTION_OUTSIDE";
-			case MotionEvent.ACTION_UP:
-				return "ACTION_UP";
-			default:
-				return String.valueOf(action);
+		case MotionEvent.ACTION_CANCEL:
+			return "ACTION_CANCEL";
+		case MotionEvent.ACTION_DOWN:
+			return "ACTION_DOWN";
+		case MotionEvent.ACTION_MOVE:
+			return "ACTION_MOVE";
+		case MotionEvent.ACTION_OUTSIDE:
+			return "ACTION_OUTSIDE";
+		case MotionEvent.ACTION_UP:
+			return "ACTION_UP";
+		default:
+			return String.valueOf(action);
 		}
 	}
 
 	public static interface OnVisibleItemChangedListener {
-		public void onVisibleItemChanged(VisibleChildDetectableHorizontalScrollView hScrollView, int first, int last);
+		public void onVisibleItemChanged(
+				VisibleChildDetectableHorizontalScrollView hScrollView,
+				int first, int last);
 	}
 }
-
-//
-//import android.content.Context;
-//import android.util.AttributeSet;
-//import android.util.Log;
-//import android.view.MotionEvent;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.HorizontalScrollView;
-//
-//public class VisibleChildDetectableHorizontalScrollView extends HorizontalScrollView {
-//	private static final String TAG = "HorizontalScrollView";
-//	private OnVisibleItemChangedListener onVisibleItemChangedListener;
-//	public static final int INVALID_POSITION = -1;
-//
-//	public VisibleChildDetectableHorizontalScrollView(Context context, AttributeSet attrs, int defStyle) {
-//		super(context, attrs, defStyle);
-//		init();
-//	}
-//
-//	public VisibleChildDetectableHorizontalScrollView(Context context, AttributeSet attrs) {
-//		super(context, attrs);
-//		init();
-//	}
-//
-//	public VisibleChildDetectableHorizontalScrollView(Context context) {
-//		super(context);
-//		init();
-//	}
-//
-//	private void init() {
-//		this.setFocusable(false);
-//		this.setHorizontalScrollBarEnabled(false);
-//	}
-//
-//	public void setOnVisibleItemChangedListener(OnVisibleItemChangedListener onVisibleItemChangedListener) {
-//		this.onVisibleItemChangedListener = onVisibleItemChangedListener;
-//	}
-//
-//	public View getGrandChildAt(int index) {
-//		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
-//		if (mainView == null || mainView.getChildCount() <= index) {
-//			return null;
-//		}
-//
-//		return mainView.getChildAt(index);
-//	}
-//
-//	public int getGrandChildCount() {
-//		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
-//		if (mainView == null) {
-//			return 0;
-//		}
-//
-//		return mainView.getChildCount();
-//	}
-//
-//	public void resetScroll() {
-//		if (this.getChildCount() <= 0) {
-//			return;
-//		}
-//
-//		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
-//		if (mainView == null) {
-//			return;
-//		}
-//
-//		StringBuilder sb = new StringBuilder();
-//		sb.append("width=").append(getWidth()).append(", mainView.getWidth()=").append(mainView.getWidth()).append("\nchildren : ");
-//
-//		boolean isLayoutFinished = (this.getWidth() > 0) && (mainView.getWidth() > 0);
-//		if (isLayoutFinished) {
-//			for (int i = 0; i < mainView.getChildCount(); i++) {
-//				View child = mainView.getChildAt(i);
-//				int width = child.getWidth();
-//				sb.append(width).append(", ");
-//
-//				if (width <= 0) {
-//					isLayoutFinished = false;
-//					break;
-//				}
-//			}
-//		}
-//		Log.d("HorizontalScrollView", "resetScroll() : " + sb.toString());
-//
-//		if (mainView.getWidth() > 0 && this.getWidth() > 0 && isLayoutFinished) {
-//			// [Choi Yunjae] width가 계산되었다면, 즉 measure가 끝난 상태라면 바로 처리해도 된다.
-//			doResetScroll();
-//		} else {
-//			postResetScroll();
-//		}
-//	}
-//
-//	private void postResetScroll() {
-//		this.post(new Runnable() {
-//			public void run() {
-//				doResetScroll();
-//			}
-//		});
-//	}
-//
-//	private void doResetScroll() {
-//		this.scrollTo(0, 0);
-//		this.triggerOnVisibleItemChanged(0);
-//	}
-//
-//	@Override
-//	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-//		triggerOnVisibleItemChanged(l);
-//
-//		super.onScrollChanged(l, t, oldl, oldt);
-//	}
-//
-//	public void triggerOnVisibleItemChanged(int newX) {
-//		ViewGroup mainView = (ViewGroup)this.getChildAt(0);
-//
-//		int scrollViewWidth = this.getWidth();
-//		int widthTotal = 0;
-//		int widthVisible = 0;
-//		int firstVisibleItemIndex = -1;
-//		int lastVisibleItemIndex = -1;
-//		for (int i = 0; i < mainView.getChildCount(); i++) {
-//			View child = mainView.getChildAt(i);
-//			int width = child.getWidth();
-//
-//			widthTotal += width;
-//
-//			if (firstVisibleItemIndex < 0) {
-//				if (newX <= widthTotal) {
-//					// find first visible index
-//					firstVisibleItemIndex = i;
-//					widthVisible = widthTotal - newX;
-//				}
-//			} else {
-//				// find last visible index
-//				widthVisible += width;
-//				if (widthVisible >= scrollViewWidth) {
-//					lastVisibleItemIndex = i;
-//					break;
-//				}
-//			}
-//		}
-//
-//		if (lastVisibleItemIndex < 0) {
-//			// overscroll
-//			lastVisibleItemIndex = mainView.getChildCount() - 1;
-//		}
-//
-//		Log.d(TAG, "triggerOnVisibleItemChanged(" + newX + ") : " + firstVisibleItemIndex + "~"
-//			+ lastVisibleItemIndex);
-//
-//		// trigger
-//		if (onVisibleItemChangedListener != null) {
-//			onVisibleItemChangedListener.onVisibleItemChanged(firstVisibleItemIndex, lastVisibleItemIndex);
-//		}
-//	}
-//
-//	public static String getActionName(int action) {
-//		switch (action) {
-//			case MotionEvent.ACTION_CANCEL:
-//				return "ACTION_CANCEL";
-//			case MotionEvent.ACTION_DOWN:
-//				return "ACTION_DOWN";
-//			case MotionEvent.ACTION_MOVE:
-//				return "ACTION_MOVE";
-//			case MotionEvent.ACTION_OUTSIDE:
-//				return "ACTION_OUTSIDE";
-//			case MotionEvent.ACTION_UP:
-//				return "ACTION_UP";
-//			default:
-//				return String.valueOf(action);
-//		}
-//	}
-//
-//	public static interface OnVisibleItemChangedListener {
-//		public void onVisibleItemChanged(int first, int last);
-//	}
-//
-//	// TODO-------------------------
-//	public int pointToPosition(int x, int y) {
-//		return INVALID_POSITION;
-//	}
-//
-//	public int getFirstVisiblePosition() {
-//		return INVALID_POSITION;
-//	}
-//}

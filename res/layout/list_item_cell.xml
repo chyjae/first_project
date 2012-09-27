@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="77.33dp" android:layout_height="77.33dp" android:gravity="center" >
     
 	<com.example.testdnd.dnd.ImageCell
 		android:id="@+id/npa_myalbum_photolist_order_change_image" android:layout_width="76dp" android:layout_height="76dp"
+		
 		android:background="@drawable/npa_empty" android:scaleType="centerCrop" />
 	
-</LinearLayout>
+	<TextView android:id="@+id/text"
+	    android:layout_width="wrap_content" android:layout_height="wrap_content"
+	    android:background="#00000000" android:textSize="20sp"
+	    android:text="1"
+	    android:gravity="center" android:textColor="#ff000000" />
+</RelativeLayout>
