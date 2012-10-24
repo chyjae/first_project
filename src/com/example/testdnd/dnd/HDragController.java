@@ -615,7 +615,8 @@ public class HDragController {
 			 * 따라서 아래처럼 강제로 원래 모양으로 되돌린다.
 			 * 다른 폰은 화면 바깥으로 드래그해도 계속 MOVE 이벤트가 발생해서 문제없다.
 			 */
-			if (enteredCell != null && ((ImageCell)enteredCell).cellNumber != ((ImageCell)dropTarget).cellNumber) {
+			if (enteredCell != null
+				&& ((ImageCell)enteredCell).getCellNumber() != ((ImageCell)dropTarget).getCellNumber()) {
 				((ImageCell)enteredCell).changeToInitialShape();
 			}
 

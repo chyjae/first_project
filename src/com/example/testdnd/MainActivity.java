@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements View.OnLongClickListener {
 
 		for (int i = 0; i < 20; i++) {
 			Item item = new Item(R.drawable.ic_launcher, String.format(
-					"Item_%02d", i));
+				"Item_%02d", i));
 			itemList.add(item);
 		}
 	}
@@ -74,21 +74,21 @@ public class MainActivity extends Activity implements View.OnLongClickListener {
 	}
 
 	public boolean startDrag(View view) {
-		DragSource dragSource = (DragSource) view;
+		DragSource dragSource = (DragSource)view;
 
-		Integer position = new Integer(((ImageCell) view).cellNumber);
+		Integer position = new Integer(((ImageCell)view).getCellNumber());
 
 		dragController.startDrag(view, dragSource, position,
-				HDragController.DRAG_ACTION_MOVE);
+			HDragController.DRAG_ACTION_MOVE);
 
 		return true;
 	}
 
 	private void initHorizontalScrollView() {
 
-		this.hScrollView = (VisibleChildDetectableHorizontalScrollView) findViewById(R.id.scrollView);
+		this.hScrollView = (VisibleChildDetectableHorizontalScrollView)findViewById(R.id.scrollView);
 
-		this.dragLayer = (DragLayer) findViewById(R.id.dragLayer);
+		this.dragLayer = (DragLayer)findViewById(R.id.dragLayer);
 		this.dragController = new HDragController(this, hScrollView);
 
 		dragLayer.setDragController(dragController);
@@ -100,37 +100,17 @@ public class MainActivity extends Activity implements View.OnLongClickListener {
 			View view = View.inflate(this, R.layout.list_item_cell, null);
 			view.setTag(item);
 
-			TextView textView = (TextView) view.findViewById(R.id.text);
+			TextView textView = (TextView)view.findViewById(R.id.text);
 			textView.setText(item.getName());
 
-			ImageCell imageCell = (ImageCell) view
-					.findViewById(R.id.npa_myalbum_photolist_order_change_image);
+			ImageCell imageCell = (ImageCell)view.findViewById(R.id.imageCell);
 			imageCell.setImageResource(item.getResId());
 
-			imageCell.cellNumber = i;
-			imageCell.empty = false;
+			imageCell.setCellNumber(i);
+			imageCell.setEmpty(false);
 
 			imageCell.setDragController(dragController);
 			imageCell.setOnLongClickListener(this);
-
-			// 드래그중일때는 드래그를 시작한 source는 안 보이는 상태로 있어야 한다. view가 재활용되기 때문 필요
-			if (dragController.mDragging) {
-				int dragSourcePosition = dragController.mDragInfo != null ? (Integer) dragController.mDragInfo
-						: -1;
-				if (dragSourcePosition != -1) {
-					if (dragSourcePosition == i) {
-						imageCell.setVisibility(View.INVISIBLE);
-
-						((View) imageCell.getParent())
-								.setVisibility(View.INVISIBLE);
-					} else {
-						imageCell.setVisibility(View.VISIBLE);
-
-						((View) imageCell.getParent())
-								.setVisibility(View.VISIBLE);
-					}
-				}
-			}
 
 			dragController.addDropTarget(i, imageCell);
 			hScrollView.addChild(view);
